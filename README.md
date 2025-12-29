@@ -51,6 +51,7 @@ Always run it in a **virtual machine** on a hypervisor (for example: VMware, Vir
 
 ---
 
+
 ## Requirements
 
 - A **Linux VM** (recommended: Ubuntu, Debian, CentOS, RHEL, Rocky, Alma, etc.).
@@ -59,4 +60,13 @@ Always run it in a **virtual machine** on a hypervisor (for example: VMware, Vir
   - Others: VirtualBox, Proxmox, etc.
 - Python **3.9+** (adjust based on your environment).
 - Basic admin rights inside the VM (you will probably need `sudo`).
+
+---
+
+## Final Note
+
+To get the most out of this simulator, it is **highly recommended** that the user has foundational Linux administration knowledge.  
+Ideally, you should study and understand the topics covered in **RHCSA (Red Hat Certified System Administrator)** or equivalent level skills **before attempting advanced scenarios**.
+
+You *can* use the simulator as a learning tool while studying, but having RHCSA-level fundamentals will make the troubleshooting process more realistic, effective, and enjoyable.
 
