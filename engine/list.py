@@ -1,5 +1,8 @@
 # list.py
 import json
+from pathlib import Path
+
+TREE_FILE = Path(__file__).parent.parent / "tree.json"
 
 def handle_list(args):
     """
