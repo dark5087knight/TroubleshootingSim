@@ -51,7 +51,7 @@ def main():
         handle_show(args)
 
     elif args.command == "run":
-        from app.run import handle_run
+        from engine.run import handle_run
         # scenario required for run
         if not args.level or not args.section or not args.scenario:
             print("Error: --level, --section, and --scenario are required for run")
