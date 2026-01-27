@@ -2,6 +2,10 @@
 
 import argparse
 import sys
+from pathlib import Path
+import json
+
+TREE_FILE = Path(__file__).parent / "tree.json"
 
 def main():
     parser = argparse.ArgumentParser(
@@ -14,20 +18,32 @@ def main():
     parser.add_argument(
         "command",
         nargs="?",
-        choices=["list", "show", "run"],
-        help="Command to execute: list, show, or run"
+        choices=["list", "show", "run", "sync"],  # added sync
+        help="Command to execute: list, show, run, sync"
     )
 
     # --- Context arguments ---
-    # These work for list, show, run
-    parser.add_argument("-l", "--level", nargs="?", const=True,
-                        help="Level name (beginner, intermediate, advanced) or just --level to list levels")
-    parser.add_argument("-s", "--section", nargs="?", const=True,
-                        help="Section name (network, storage, services) or just --section to list sections")
-    parser.add_argument("--senarios", action="store_true",
-                        help="Include scenarios when listing sections or levels")
-    parser.add_argument("--scenario", help="Scenario name (for show/run commands)")
-    parser.add_argument("--dry-run", action="store_true", help="Preview commands without executing")
+    parser.add_argument(
+        "-l", "--level",
+        nargs="?", const=True,
+        help="Level name (beginner, intermediate, advanced) or just --level to list levels"
+    )
+    parser.add_argument(
+        "-s", "--section",
+        nargs="?", const=True,
+        help="Section name (network, storage, services) or just --section to list sections"
+    )
+    parser.add_argument(
+        "--scenario",
+        nargs="?",       # optional value
+        const=True,      # if no value is given → True (for list depth)
+        help="For list: include scenarios; for show/run: scenario name"
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Preview commands without executing"
+    )
 
     args = parser.parse_args()
 
@@ -42,21 +58,49 @@ def main():
         from engine.list import handle_list
         handle_list(args)
 
-    elif args.command == "show":
-        from engine.show import handle_show
-        # scenario required for show
-        if not args.level or not args.section or not args.scenario:
-            print("Error: --level, --section, and --scenario are required for show")
-            sys.exit(1)
-        handle_show(args)
+    elif args.command in ["show", "run"]:
+        # For show/run, if --scenario provided but level or section missing, auto-detect from tree.json
+        if args.scenario and args.scenario is not True:
+            # Load tree.json
+            with open(TREE_FILE, "r") as f:
+                tree = json.load(f)
 
-    elif args.command == "run":
-        from engine.run import handle_run
-        # scenario required for run
-        if not args.level or not args.section or not args.scenario:
-            print("Error: --level, --section, and --scenario are required for run")
-            sys.exit(1)
-        handle_run(args)
+            level = args.level
+            section = args.section
+            scenario = args.scenario
+
+            # Lookup scenario in tree if level/section missing
+            if not level or not section:
+                found = False
+                for lvl_name, sections in tree.items():
+                    for sec_name, scenarios in sections.items():
+                        if scenario in scenarios:
+                            if not level:
+                                level = lvl_name
+                            if not section:
+                                section = sec_name
+                            found = True
+                            break
+                    if found:
+                        break
+                if not found:
+                    print(f"❌ Scenario '{scenario}' not found in tree.json")
+                    sys.exit(1)
+                args.level = level
+                args.section = section
+
+        if args.command == "show":
+            from engine.show import handle_show
+            handle_show(args)
+        elif args.command == "run":
+            from engine.run import handle_run
+            handle_run(args)
+
+    elif args.command == "sync":
+        # --- Sync command ---
+        from engine.sync import handle_sync
+        handle_sync(args)
+
 
 if __name__ == "__main__":
     main()

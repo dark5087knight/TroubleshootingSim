@@ -10,20 +10,23 @@ def handle_list(args):
     with open("tree.json", "r") as f:
         tree = json.load(f)
 
-    # Helper to print scenarios with pretty formatting
+    # --- Helper to print scenarios ---
     def print_scenarios(scen_list, indent="        "):
         for i, scen in enumerate(scen_list, 1):
             print(f"{indent}└─ [{i}] {scen}")
 
-    # Helper to print sections
+    # --- Helper to print sections ---
     def print_sections(sections, show_scenarios=False):
         for i, (section_name, scenarios) in enumerate(sections.items(), 1):
             print(f"    ├─ [{i}] {section_name}")
             if show_scenarios:
                 print_scenarios(scenarios, indent="        ")
 
+    # --- Determine if we should show scenarios ---
+    show_scenarios = args.scenario is True
+
     # --- No args → list everything ---
-    if not args.level and not args.section and not args.senarios:
+    if not args.level and not args.section and not show_scenarios:
         print("\n▶ All Levels, Sections, and Scenarios:\n")
         for i, (level_name, sections) in enumerate(tree.items(), 1):
             print(f"{i}. ▶ Level: {level_name}")
@@ -55,7 +58,7 @@ def handle_list(args):
         print(f"\n▶ Level: {args.level}")
 
         # --section without value → list sections of this level
-        if args.section is True or (args.section is None and not args.senarios):
+        if args.section is True or (args.section is None and not show_scenarios):
             print("  Sections:")
             for i, section_name in enumerate(level_data.keys(), 1):
                 print(f"    {i}. {section_name}")
@@ -68,19 +71,19 @@ def handle_list(args):
                 return
             section_scenarios = level_data[args.section]
             print(f"  Section: {args.section}")
-            if args.senarios:
+            if show_scenarios:
                 print_scenarios(section_scenarios)
             else:
-                print("    (Scenarios hidden. Use --senarios to list)")
+                print("    (Scenarios hidden. Use --scenario to list)")
             return
 
-        # --senarios without specifying section → list all sections + scenarios in level
-        if args.senarios:
+        # --scenario without specifying section → list all sections + scenarios in level
+        if show_scenarios:
             print_sections(level_data, show_scenarios=True)
             return
 
-    # --- Only --senarios without specifying level → list all scenarios under all sections/levels
-    if args.senarios and not args.level and not args.section:
+    # --- Only --scenario without specifying level → list all scenarios under all sections/levels
+    if show_scenarios and not args.level and not args.section:
         print("\n▶ All Levels with Scenarios:\n")
         for i, (level_name, sections) in enumerate(tree.items(), 1):
             print(f"{i}. ▶ Level: {level_name}")

@@ -1,6 +1,6 @@
 {
   "beginner": {
-    "network": ["example"],
+    "network": ["broke-dns"],
     "storage": ["example"],
     "services": ["example"]
   },
