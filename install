@@ -12,17 +12,23 @@ echo "----------------------------------"
 
 # Check for root
 if [[ $EUID -ne 0 ]]; then
-  echo "Please run as root (use sudo)"
+  echo "❌ Please run as root (use sudo)"
   exit 1
 fi
 
 # Check Python
 if ! command -v python3 &>/dev/null; then
-  echo "Python3 is not installed"
+  echo "❌ Python3 is not installed"
   exit 1
 fi
 
-echo "Python3 detected"
+echo "✅ Python3 detected"
+
+# Remove existing install directory if exists
+if [[ -d "$INSTALL_DIR" ]]; then
+    echo "⚠️  Existing installation detected. Removing $INSTALL_DIR ..."
+    rm -rf "$INSTALL_DIR"
+fi
 
 # Create install directory
 echo "Installing to $INSTALL_DIR"
@@ -32,17 +38,17 @@ mkdir -p "$INSTALL_DIR"
 echo "Copying application files..."
 cp -r engine main.py README.md "$INSTALL_DIR"
 
-# Download tree.json from GitHub
+# Download tree.json from GitHub (force overwrite)
 echo "Downloading latest tree.json from GitHub..."
 curl -fsSL "$TREE_JSON_URL" -o "$INSTALL_DIR/tree.json"
 
 # Ensure executable
 chmod +x "$INSTALL_DIR/main.py"
 
-# Create symlink
-echo "Creating global command: $APP_NAME"
+# Create symlink (force overwrite if exists)
 ln -sf "$INSTALL_DIR/main.py" "$BIN_LINK"
 
 echo ""
 echo " Installation complete!"
 echo ""
+
