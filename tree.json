@@ -1,0 +1,17 @@
+{
+  "beginner": {
+    "network": ["example"],
+    "storage": ["example"],
+    "services": ["example"]
+  },
+  "intermediate": {
+    "network": ["example"],
+    "storage": ["example"],
+    "services": ["example"]
+  },
+  "advanced": {
+    "network": ["example"],
+    "storage": ["example"],
+    "services": ["example"]
+  }
+}

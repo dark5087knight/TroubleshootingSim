@@ -33,11 +33,10 @@ do
         MODE="UNKNOWN ($IPV4_METHOD)"
     fi
 
-    nmcli con modify $DEVICE ipv4.dns "0.0.0.0"
+    nmcli con modify $DEVICE ipv4.dns "192.168.0.11 192.168.0.1"
     nmcli connection down $DEVICE > /dev/null
     nmcli connection up $DEVICE  > /dev/null
     nmcli connection reload $DEVICE  > /dev/null
     systemctl restart NetworkManager  > /dev/null
 
 done
-reboot

@@ -18,10 +18,15 @@ def main():
         help="Command to execute: list, show, or run"
     )
 
-    # --- Context arguments (optional depending on command) ---
-    parser.add_argument("-l", "--level", help="Level name (beginner, intermediate, advanced)")
-    parser.add_argument("-s", "--section", help="Section name (network, storage, services)")
-    parser.add_argument("--scenario", help="Scenario name")
+    # --- Context arguments ---
+    # These work for list, show, run
+    parser.add_argument("-l", "--level", nargs="?", const=True,
+                        help="Level name (beginner, intermediate, advanced) or just --level to list levels")
+    parser.add_argument("-s", "--section", nargs="?", const=True,
+                        help="Section name (network, storage, services) or just --section to list sections")
+    parser.add_argument("--senarios", action="store_true",
+                        help="Include scenarios when listing sections or levels")
+    parser.add_argument("--scenario", help="Scenario name (for show/run commands)")
     parser.add_argument("--dry-run", action="store_true", help="Preview commands without executing")
 
     args = parser.parse_args()
