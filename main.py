@@ -43,7 +43,7 @@ def main():
         handle_list(args)
 
     elif args.command == "show":
-        from app.show import handle_show
+        from engine.show import handle_show
         # scenario required for show
         if not args.level or not args.section or not args.scenario:
             print("Error: --level, --section, and --scenario are required for show")

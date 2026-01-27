@@ -10,7 +10,7 @@
     "services": ["example"]
   },
   "advanced": {
-    "network": ["example"],
+    "network": ["broken-dns"],
     "storage": ["example"],
     "services": ["example"]
   }
