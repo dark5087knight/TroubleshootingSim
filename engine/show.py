@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 REPO_OWNER = "dark5087knight"
-REPO_NAME = "TroubleshootingSim"
+REPO_NAME = "TroubleshootingScenarios"
 BRANCH = "main"
 
 TREE_FILE = Path(__file__).parent.parent / "tree.json"
