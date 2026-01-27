@@ -1,0 +1,17 @@
+{
+  "beginner": {
+    "network": ["broke-dns"],
+    "storage": ["lost-parttion"],
+    "services": ["example"]
+  },
+  "intermediate": {
+    "network": ["example"],
+    "storage": ["example"],
+    "services": ["example"]
+  },
+  "advanced": {
+    "network": ["broken-dns"],
+    "storage": ["example"],
+    "services": ["example"]
+  }
+}

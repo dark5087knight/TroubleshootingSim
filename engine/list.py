@@ -7,7 +7,7 @@ def handle_list(args):
     """
 
     # Load the JSON tree
-    with open("tree.json", "r") as f:
+    with with open(TREE_FILE, "r") as f:
         tree = json.load(f)
 
     # --- Helper to print scenarios ---
