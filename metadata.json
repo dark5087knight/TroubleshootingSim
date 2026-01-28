@@ -1,0 +1,8 @@
+{
+  "name": "LabCTL",
+  "version": "1.0.0",
+  "author": "Obaida",
+  "license": "MIT",
+  "description": "Linux Troubleshooting Simulator – interactive and CLI tool for learning Linux troubleshooting scenarios.",
+  "website": "https://github.com/dark5087knight/TroubleshootingScenarios"
+}

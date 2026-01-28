@@ -5,9 +5,22 @@ import sys
 from pathlib import Path
 import json
 
+# --- Determine paths ---
 main_path = Path(sys.argv[0]).resolve()  # resolves symlink
 local_dir = main_path.parent              # directory where main.py actually lives
 TREE_FILE = local_dir / "tree.json"
+META_FILE = local_dir / "metadata.json"  # metadata file beside tree.json
+
+def print_version():
+    """Read metadata.json and print version info"""
+    if not META_FILE.exists():
+        print("Metadata file not found!")
+        return
+    try:
+        meta = json.loads(META_FILE.read_text())
+        print(f"{meta.get('name', 'LabCTL')} v{meta.get('version', 'unknown')}")
+    except Exception as e:
+        print(f"Error reading metadata: {e}")
 
 def main():
     parser = argparse.ArgumentParser(
@@ -16,12 +29,19 @@ def main():
         add_help=True
     )
 
+    # --- Add --version argument ---
+    parser.add_argument(
+        "--version",
+        action="store_true",
+        help="Show LabCTL version and metadata"
+    )
+
     # --- First argument MUST be the command ---
     parser.add_argument(
         "command",
         nargs="?",
-        choices=["list", "show", "run", "sync"],  # added sync
-        help="Command to execute: list, show, run, sync"
+        choices=["list", "show", "run", "sync", "update"],  # added update
+        help="Command to execute: list, show, run, sync, update"
     )
 
     # --- Context arguments ---
@@ -48,6 +68,11 @@ def main():
     )
 
     args = parser.parse_args()
+
+    # --- Handle version ---
+    if args.version:
+        print_version()
+        sys.exit(0)
 
     # --- No command provided → launch interactive mode ---
     if not args.command:
@@ -102,6 +127,11 @@ def main():
         # --- Sync command ---
         from engine.sync import handle_sync
         handle_sync(args)
+
+    elif args.command == "update":
+        # --- Update command ---
+        from engine.update import handle_update
+        handle_update(args)
 
 
 if __name__ == "__main__":
