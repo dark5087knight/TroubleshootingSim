@@ -1,5 +1,6 @@
 # list.py
 import json
+import sys
 from pathlib import Path
 
 main_path = Path(sys.argv[0]).resolve()  # resolves symlink
