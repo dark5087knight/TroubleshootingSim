@@ -6,7 +6,9 @@ from pathlib import Path
 
 # URL of the tree.json in the repo
 TREE_JSON_URL = "https://raw.githubusercontent.com/dark5087knight/TroubleshootingScenarios/main/tree.json"
-TREE_FILE = Path(__file__).parent.parent / "tree.json"
+main_path = Path(sys.argv[0]).resolve()  # resolves symlink
+local_dir = main_path.parent              # directory where main.py actually lives
+TREE_FILE = local_dir / "tree.json"
 def handle_sync(args):
     """
     Sync the local tree.json with the latest version from GitHub,
