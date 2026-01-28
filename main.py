@@ -5,7 +5,9 @@ import sys
 from pathlib import Path
 import json
 
-TREE_FILE = Path(__file__).parent / "tree.json"
+main_path = Path(sys.argv[0]).resolve()  # resolves symlink
+local_dir = main_path.parent              # directory where main.py actually lives
+TREE_FILE = local_dir / "tree.json"
 
 def main():
     parser = argparse.ArgumentParser(
