@@ -9,8 +9,8 @@ import shutil
 import os
 
 # --- GitHub repo ---
-REPO_URL = "https://github.com/dark5087knight/TroubleshootingScenarios.git"
-REPO_METADATA_URL = "https://raw.githubusercontent.com/dark5087knight/TroubleshootingScenarios/main/metadata.json"
+REPO_URL = "https://github.com/dark5087knight/TroubleshootingSim.git"
+REPO_METADATA_URL = "https://raw.githubusercontent.com/dark5087knight/TroubleshootingSim/main/metadata.json"
 
 # --- Local paths ---
 MAIN_PATH = Path(sys.argv[0]).resolve()       # main.py path
